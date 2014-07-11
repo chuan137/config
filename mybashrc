@@ -1,0 +1,24 @@
+# aliases
+test -s ~/.alias && . ~/.alias || true
+alias ls="ls --color -h --group-directories-first"
+alias du="du -h"
+alias ll="ls -l"
+alias la='ls -la'
+alias ltr="ls -ltr"
+
+# Path
+export PATH=$(find $HOME/applications -maxdepth 2 -type d -name bin -printf "%p:")$PATH
+
+# term
+export TERM=xterm-256color
+
+# cmd prompt
+if [ -n "$SSH_CLIENT" ]; then
+    export PS1='\[\033[0;36m\]\h \[\033[0;32m\]\W :> \[\033[0m\]'
+else
+    export PS1='\[\033[0;32m\]\W :> \[\033[0m\]'
+fi
+
+# readline binding
+#>> kill word at cursor
+bind '"\C-p": shell-kill-word'
