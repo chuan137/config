@@ -7,22 +7,36 @@ set hlsearch                            " Highlight search
 set viminfo^=h                          " Start with no highlighting
 set autochdir                           " Change directory to current buffer on opening
 set number                              " Show line numbers
+set mouse=a                              " enable mouse
 "set hidden                              " Keep buffer until killed
 "set foldlevel=0                         " Set fold level, 'zm'/'zr' to fold more/less
 
 
 "
-" VAM
-" vim addon manager
+" Vundle
 "
-set nocompatible | filetype indent plugin on | syn on
+"set nocompatible | filetype indent plugin on | syn on
+set nocompatible
+filetype off
 
-set rtp+=~/.vim/vim-addons/vim-addon-manager
-let g:vim_addon_manager = {}
-let g:vim_addon_manager.log_to_buf = 0
-call vam#ActivateAddons([])
-VAMActivate tlib matchit.zip ctrlp lightline.vim nerdtree nerdtree-tabs The_NERD_Commenter delimitMate Buffergator
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
+Plugin 'gmarik/Vundle.vim'
+"Plugin 'itchyny/lightline.vim'
+"Plugin 'edsono/vim-matchit'
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'scrooloose/syntastic'
+"Plugin 'bling/vim-airline'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+"Plugin 'scrooloose/nerdcommenter'
+"Plugin 'ivalkeen/nerdtree-execute'
+Plugin 'tomtom/tlib_vim'
+
+call vundle#end()
+filetype indent plugin on 
+syn on
 
 ""
 "" addon settings
@@ -51,16 +65,15 @@ endif
 " nerdtree
 "
 
-"## enable mouse
-set mouse=a
 map <TAB> <C-w>w
 map <C-e> :NERDTreeTabsToggle<CR>
 map <C-A-PageDown> :tabn<CR>
 map <C-A-PageUp> :tabp<CR>
+map <S-Tab> :tabn<CR>
 map <C-n> :tabnew<CR>
 
 "## quit if all buffer are closed, even NERDTree is open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 "## open NERDTree if no file is open on startup
 "autocmd vimenter * NERDTree
 "autocmd vimenter * call s:CheckToSplitTwoTrees()
