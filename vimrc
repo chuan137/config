@@ -33,6 +33,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 "Plugin 'scrooloose/nerdcommenter'
 "Plugin 'ivalkeen/nerdtree-execute'
 Plugin 'tomtom/tlib_vim'
+Plugin 'mkitt/tabline.vim'
 
 call vundle#end()
 filetype indent plugin on 
