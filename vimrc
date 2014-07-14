@@ -15,7 +15,6 @@ set mouse=a                              " enable mouse
 "
 " Vundle
 "
-"set nocompatible | filetype indent plugin on | syn on
 set nocompatible
 filetype off
 
@@ -23,19 +22,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 
-Plugin 'gmarik/Vundle.vim'
-"Plugin 'itchyny/lightline.vim'
-"Plugin 'edsono/vim-matchit'
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'scrooloose/syntastic'
-"Plugin 'bling/vim-airline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-"Plugin 'scrooloose/nerdcommenter'
-"Plugin 'ivalkeen/nerdtree-execute'
-Plugin 'tomtom/tlib_vim'
-Plugin 'mkitt/tabline.vim'
-Plugin 'jiangmiao/auto-pairs'
+source /home/chuan/.vim/pluginlist
 
 call vundle#end()
 filetype indent plugin on 
