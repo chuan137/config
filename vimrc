@@ -50,33 +50,36 @@ if !has('gui_running')
 	set t_Co=256
 endif
 
+"
+" NETRW
+"
+let g:netrw_liststyle=3
 
 "
 " nerdtree
 "
+"map <TAB> <C-w>w
+"map <C-e> :NERDTreeTabsToggle<CR>
+"map <C-A-PageDown> :tabn<CR>
+"map <C-A-PageUp> :tabp<CR>
+"map <S-Tab> :tabn<CR>
+"map <C-n> :tabnew<CR>
 
-map <TAB> <C-w>w
-map <C-e> :NERDTreeTabsToggle<CR>
-map <C-A-PageDown> :tabn<CR>
-map <C-A-PageUp> :tabp<CR>
-map <S-Tab> :tabn<CR>
-map <C-n> :tabnew<CR>
-
-"## quit if all buffer are closed, even NERDTree is open
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-"## open NERDTree if no file is open on startup
-"autocmd vimenter * NERDTree
-"autocmd vimenter * call s:CheckToSplitTwoTrees()
-function! s:CheckToSplitTwoTrees()
-    if argc() != 1 || !isdirectory(argv(0))
-        return
-    endif
+""## quit if all buffer are closed, even NERDTree is open
+""autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+""## open NERDTree if no file is open on startup
+""autocmd vimenter * NERDTree
+""autocmd vimenter * call s:CheckToSplitTwoTrees()
+"function! s:CheckToSplitTwoTrees()
+    "if argc() != 1 || !isdirectory(argv(0))
+        "return
+    "endif
  
-    vsplit
+    "vsplit
  
-    "there should really be a better way to do this... e.g. :NERDTreeSecondary
-    call nerdtree#checkForBrowse(argv(0))
-endfunction
+    ""there should really be a better way to do this... e.g. :NERDTreeSecondary
+    "call nerdtree#checkForBrowse(argv(0))
+"endfunction
 
 
 "
@@ -85,11 +88,26 @@ endfunction
 let g:buffergator_viewport_split_policy="B"
 let g:buffergator_split_size=10
 
+"
+" Ragtag
+"
+inoremap <M-o>       <Esc>o
+inoremap <C-j>       <Down>
+let g:ragtag_global_maps = 1
 
 ""
 "" custom mappings
 ""
 
+"
+" TAB
+"
+nnoremap <C-Left> :tabn<CR>
+nnoremap <C-Right> :tabp<CR>
+
+"
+" BUFFER
+"
 " \b       : list buffers
 " \a \d \g : go back/forward/last-used
 " \x       : close buffer
@@ -109,6 +127,8 @@ nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
+
+
 " Excecute last command
 nnoremap <Leader><CR> :!<UP><CR>
 nmap <F2> :set nu!<CR>
