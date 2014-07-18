@@ -13,7 +13,7 @@ files="mybashrc vimrc vim/pluginlist"
 echo -n "Backing up old dotfiles ..."
 mkdir -p $olddir
 for f in $files; do
-    mv ~/.$f $olddir/$f
+    mv ~/.$f $olddir/
 done
 echo "done"
 
