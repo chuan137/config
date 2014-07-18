@@ -5,9 +5,9 @@
 # set up symbolic links for dotfiles
 ########################################################
 
-dir=~/archive/dotfiles
-olddir=~/archive/dotfiles_old
-files="mybashrc vimrc vim"
+dir=~/cache/dotfiles
+olddir=~/cache/dotfiles_old
+files="mybashrc vimrc"
 
 # backup old files
 echo -n "Backing up old dotfiles ..."
