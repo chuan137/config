@@ -7,7 +7,7 @@
 
 dir=~/cache/dotfiles
 olddir=~/cache/dotfiles_old
-files="mybashrc vimrc"
+files="mybashrc vimrc vim/pluginlist"
 
 # backup old files
 echo -n "Backing up old dotfiles ..."
