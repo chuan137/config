@@ -75,6 +75,12 @@ let g:buffergator_split_size=10
 inoremap <M-o>       <Esc>o
 inoremap <C-j>       <Down>
 let g:ragtag_global_maps = 1
+""
+""
+"" TAGBAR
+""
+nmap <F8> :TagbarToggle<CR>
+
 
 """"""""""""""""""""""""""""""
 "" custom mappings

@@ -15,4 +15,5 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-ragtag'
 Plugin 'kien/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
 
