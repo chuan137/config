@@ -32,4 +32,4 @@ for f in $files; do
     echo -n "$f "
     ln -s $dir/$f ~/.$f
 done
-echo "\ndone"
+echo -e "\ndone"
