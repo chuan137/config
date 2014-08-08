@@ -7,7 +7,7 @@
 
 dir=~/etc/dotfiles
 olddir=~/etc/dotfiles_old
-files="mybashrc vimrc vim/pluginlist"
+files="mybashrc inputrc vimrc vim/pluginlist"
 
 if [[ ! -d ~/.vim ]]; then
     mkdir ~/.vim
@@ -27,9 +27,9 @@ echo "done"
 
 
 # create symbolic links
-echo -n "> Create symbolic links for ..."
+echo "> Create symbolic links for ..."
 for f in $files; do
-    echo -n "$f "
+    echo -e "    $f "
     ln -s $dir/$f ~/.$f
 done
-echo "\ndone"
+echo "done"
