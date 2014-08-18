@@ -3,8 +3,8 @@ test -s ~/.alias && . ~/.alias || true
 alias ls="ls --color -h --group-directories-first"
 alias du="du -h"
 alias l="ls -l"
-alias ll="ls -l"
-alias la='ls -la'
+alias ll="ls -la"
+alias la='ls -A'
 alias ltr="ls -ltr"
 alias open='xdg-open 2>/tmp/xdg-open'
 alias ..='cd ..'

@@ -12,5 +12,5 @@ if [ ! -f '~/.config/fontconfig/conf.d/10-powerline-symbols.conf' ]; then
     mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d
 fi
 
-cp powerline-fonts ~/.fonts -r
+cp powerline/powerline-fonts ~/.fonts -r
 fc-cache -vf ~/.fonts
