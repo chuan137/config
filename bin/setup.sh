@@ -5,8 +5,8 @@
 # set up symbolic links for dotfiles
 ########################################################
 
-dir=~/etc/dotfiles
-olddir=~/etc/dotfiles_old
+dir=~/data/dotfiles
+olddir=~/data/dotfiles_old
 files="mybashrc inputrc vimrc vim/pluginlist"
 
 if [[ ! -d ~/.vim ]]; then
