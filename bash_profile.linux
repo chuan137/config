@@ -9,9 +9,11 @@ alias ltr="ls -ltr"
 alias open='xdg-open 2>/tmp/xdg-open'
 alias ..='cd ..'
 alias ...='cd ../..'
+alias vi='vim -X'
 
 # Path
 export PATH=$(find $HOME/applications -maxdepth 2 -type d -name bin -printf "%p:")$PATH
+export PATH=$(find $HOME/usr -maxdepth 2 -type d -name bin -printf "%p:")$PATH
 
 # term
 export TERM=xterm-256color
