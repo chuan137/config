@@ -92,8 +92,8 @@ let g:ragtag_global_maps = 1
 nmap <F8> :TagbarToggle<CR>
 
 " [[ Atuo Pairs ]]
-let g:AutoPairsShortcutToggle = '<Esc>w'
-let g:AutoPairsShortcutFastWrap = '<Esc>e'
+let g:AutoPairsShortcutToggle = '<Alt-w>'
+let g:AutoPairsShortcutFastWrap = '<Alt-e>'
 let g:AutoPairsShortcutJump='<Esc>n'
 let g:AutoPairsShortcutBackInsert='<Esc>b'
 
