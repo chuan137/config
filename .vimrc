@@ -114,12 +114,6 @@ let g:ragtag_global_maps = 1
 " >>>Tag Bar<<<
 nmap <F8> :TagbarToggle<CR>
 
-" >>>Atuo Pair<<<
-"let g:AutoPairsShortcutToggle = '<F4>'
-"let g:AutoPairsShortcutFastWrap = '<C-e>'
-"let g:AutoPairsShortcutJump='<C-j>'
-"let g:AutoPairsShortcutBackInsert='<C-b>'
-
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
@@ -133,6 +127,7 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Styles
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
