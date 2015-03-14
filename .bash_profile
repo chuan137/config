@@ -14,7 +14,12 @@ export PATH=/usr/local/sbin:/usr/local/bin:$PATH
 
 # Python virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenv
-source /usr/local/bin/virtualenvwrapper.sh
+if [ -f '/usr/local/bin/virtualenvwrapper.sh' ]; then
+    source /usr/local/bin/virtualenvwrapper.sh
+fi
+if [ -f '/usr/bin/virtualenvwrapper.sh' ]; then
+    source /usr/bin/virtualenvwrapper.sh
+fi
 
 # Term
 export TERM=xterm-256color
@@ -47,4 +52,21 @@ case $(ps -o comm $PPID) in *vi|*vim)
   PS1="( vim ) $PS1" ;;
 esac
 
+# term
+if [[ -z $TMUX ]]; then
+    if [ -e /usr/share/terminfo/x/xterm+256color ]; then # may be xterm-256 depending on your distro
+        export TERM='xterm-256color'
+    else
+        export TERM='xterm'
+    fi
+else
+    if [ -e /usr/share/terminfo/s/screen-256color ]; then
+        export TERM='screen-256color'
+    else
+        export TERM='screen'
+    fi
+fi
 
+# readline binding
+#>> kill word at cursor
+bind '"\C-p": shell-kill-word'
