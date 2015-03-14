@@ -1,5 +1,4 @@
 # aliases
-test -s ~/.alias && . ~/.alias || true
 alias l="ls -l"
 alias ll="ls -la"
 alias la='ls -A'
