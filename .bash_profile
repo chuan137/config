@@ -11,6 +11,16 @@ alias vim="usr/bin/vim -R"
 
 # Path
 export PATH=/usr/local/sbin:/usr/local/bin:$PATH
+if [ -d $HOME/usr ]; then
+    export PATH=$HOME/usr/bin:$PATH
+    export PKG_CONFIG_PATH=$HOME/usr/lib/pkgconfig:$PKG_CONFIG_PATH
+    export LD_LIBRARY_PATH=$HOME/usr/lib:$LD_LIBRARY_PATH
+    export C_INCLUDE_PATH=$HOME/usr/include:$C_INCLUDE_PATH
+    export CPLUS_INCLUDE_PATH=$HOME/usr/include:$CPLUS_INCLUDE_PATH
+fi
+if [ -d $HOME/usr/lib/girepository-1.0 ]; then
+    export GI_TYPELIB_PATH=$HOME/usr/lib/girepository-1.0:$GI_TYPELIB_PATH
+fi
 
 # Python virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenv
@@ -20,9 +30,6 @@ fi
 if [ -f '/usr/bin/virtualenvwrapper.sh' ]; then
     source /usr/bin/virtualenvwrapper.sh
 fi
-
-# Term
-export TERM=xterm-256color
 
 # Os specific settings
 case "$(uname -s)" in
@@ -52,7 +59,7 @@ case $(ps -o comm $PPID) in *vi|*vim)
   PS1="( vim ) $PS1" ;;
 esac
 
-# term
+# Term
 if [[ -z $TMUX ]]; then
     if [ -e /usr/share/terminfo/x/xterm+256color ]; then # may be xterm-256 depending on your distro
         export TERM='xterm-256color'
