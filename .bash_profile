@@ -21,6 +21,13 @@ fi
 if [ -d $HOME/usr/lib/girepository-1.0 ]; then
     export GI_TYPELIB_PATH=$HOME/usr/lib/girepository-1.0:$GI_TYPELIB_PATH
 fi
+if [ -d $HOME/applications ]; then
+    export PATH=$(find $HOME/applications -maxdepth 2 -type d -name bin -printf "%p:")$PATH
+fi
+if [ -d $HOME/.go ]; then
+    export PATH=$HOME/.go/bin:$PATH
+fi
+export N_PREFIX=$HOME/usr
 
 # Python virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenv
@@ -40,7 +47,6 @@ case "$(uname -s)" in
         ;;
     Linux)
         export INPUTRC=~/.inputrc
-        export PATH=$(find $HOME/applications -maxdepth 2 -type d -name bin -printf "%p:")$PATH
         alias open='xdg-open 2>/tmp/xdg-open'
         alias ls="ls --color -h --group-directories-first"
         ;;
@@ -77,3 +83,10 @@ fi
 # readline binding
 #>> kill word at cursor
 bind '"\C-p": shell-kill-word'
+
+# share code or whatever in terminal via web service paste.click
+paste_file()
+{
+    curl --data-binary @"$1" paste.click | xclip
+}
+alias paste_web='curl --data-binary @- paste.click | xclip'
