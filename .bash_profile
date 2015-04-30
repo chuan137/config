@@ -6,8 +6,7 @@ alias ltr="ls -ltr"
 alias du="du -h"
 alias ..='cd ..'
 alias ...='cd ../..'
-alias vi="/usr/bin/vim -X"
-alias vim="usr/bin/vim -R"
+alias vi="vim"
 
 # Path
 export PATH=/usr/local/sbin:/usr/local/bin:$PATH
@@ -21,9 +20,9 @@ fi
 if [ -d $HOME/usr/lib/girepository-1.0 ]; then
     export GI_TYPELIB_PATH=$HOME/usr/lib/girepository-1.0:$GI_TYPELIB_PATH
 fi
-if [ -d $HOME/applications ]; then
-    export PATH=$(find $HOME/applications -maxdepth 2 -type d -name bin -printf "%p:")$PATH
-fi
+#if [ -d $HOME/applications ]; then
+#    export PATH=$(find $HOME/applications -maxdepth 2 -type d -name bin -print "%p:")$PATH
+#fi
 if [ -d $HOME/.go ]; then
     export PATH=$HOME/.go/bin:$PATH
 fi
