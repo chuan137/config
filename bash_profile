@@ -41,10 +41,13 @@ alias vi="/usr/bin/vim -X"
 alias vim="usr/bin/vim -R"
 
 # key binding with readline
-bind '"\C-d": kill-word'     
-bind '"\C-f": forward-word'   
-bind '"\C-b": backward-word'
-bind '"\C-g": kill-whole-line'
+if [ -t 1 ]
+then
+    bind '"\C-d": kill-word'     
+    bind '"\C-f": forward-word'   
+    bind '"\C-b": backward-word'
+    bind '"\C-g": kill-whole-line'
+fi
 
 # Set different prompt on ssh login
 if [ -n "$SSH_CLIENT" ]; then
