@@ -1,0 +1,19 @@
+# Helps out a lot on Windows
+fastcheck = true
+
+# place new files at the top of the list
+sortnewfirst = true
+
+# turn on ssh compression
+rshargs = -C
+
+# disable log
+log = false
+
+ignore = Name Thumbs.db
+ignore = Name *~
+ignore = Name *.tmp
+ignore = Name \.*DS_Store
+
+follow = Path papers
+follow = Path tmp/
