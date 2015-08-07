@@ -1,187 +1,189 @@
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => general settings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"colorscheme darkblue
+"{{{ settings
 colorscheme digerati
-
 filetype plugin on
 filetype indent on
 
-set history=1000
-set formatoptions-=o        " dont continue comments when pushing o/O
-set hidden                  " Keep buffer until killed; allow swtich without save
-set autochdir               " Change directory to current buffer on opening
-set splitbelow              " default split direction
-set splitright              " ...
+set nocompatible
 set laststatus=2
-set ttymouse=xterm2
-set mouse=n                 " enable mouse
+set scrolloff=5
+set sidescrolloff=5
+set fo+=o           " use C-w to delte the comment symbol
+set mouse=n
+set ttyfast
 
-" wildmenu
-set wildmenu                " enable ctrl-n and ctrl-p to scroll thru matches
-set wildignore=*.o,*.obj,*~ " stuff to ignore when tab completing
+set hidden
+set tabstop=4
+set shiftwidth=4
+set expandtab       " Convert tab to space
+set smarttab		" <BS> delte spaces acorrding to shiftwidth
+set autoindent      " ...
+set smartindent     " ...
+
+set wildmenu                
+set wildmode=longest:full,full
+set wildignore=*.o,*.obj,*~ 
 set wildignore+=*.so,*.swp,*.zip
 set wildignore+=*/node_modules/*,*/tmp/*,*/errors/*
 
-" default indent settings
-set tabstop=4
-set shiftwidth=4
-set expandtab               " Convert tab to space
-set smarttab		        " <BS> delte spaces acorrding to shiftwidth
-set smartindent
-
 " search settings
-set incsearch               " find the next match as we type
-set hlsearch                " Highlight search
-set viminfo^=h              " Start with no highlighting
-set ignorecase              " ignore case in search
-set smartcase               
+set incsearch       " find the next match as we type
+set hlsearch        " Highlight search
+set viminfo^=h      " Start with no highlighting
+set ignorecase      " ignore case in search
+set smartcase        
 
-" folding  [ 'zm'/'zr' to fold more/less ]
-set foldmethod=indent       " fold based on indent
-set foldnestmax=0           " deepest fold is 3 levels
+" Folding
+set foldenable
+set foldmethod=marker
+set foldopen-=block
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
+nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
+nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
 
-"set number                  " Show line numbers
+" Window
+set splitbelow
+set splitright
+nnoremap <S-Tab>    <C-w>w
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => addons management
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" >>>VUNDLE<<< 
-set nocompatible
+" mappings
+nnoremap <leader>g  :e#<CR>
+nnoremap <leader>q  :q!<CR>
+nnoremap <leader>w  :w<CR>
+nnoremap <leader>r  :source ~/.vimrc<cr>;   " Reload rc file
+nmap     <C-a>      :sh<CR>
+" settings }}}
+
+"{{{ Plugin
+"
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-"---------------------------------------
 Plugin 'gmarik/Vundle.vim'
-"Plugin 'edsono/vim-matchit'
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'scrooloose/syntastic'
-"Plugin 'bling/vim-airline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'ivalkeen/nerdtree-execute'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tomtom/tlib_vim'
-Plugin 'mkitt/tabline.vim'
-Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'kien/ctrlp.vim' 
+Plugin 'shougo/neocomplete'
+Plugin 'shougo/neosnippet.vim'
+Plugin 'Shougo/neosnippet-snippets'
+Plugin 'davidhalter/jedi-vim'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'jordwalke/VimCompleteLikeAModernEditor'
+"Plugin 'honza/vim-snippets'
+Plugin 'osyo-manga/vim-marching'
+Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-ragtag'
-Plugin 'tpope/vim-fugitive'
-Plugin 'kien/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'vim-scripts/RltvNmbr.vim'
-Plugin 'spolu/dwm.vim'
-Plugin 'shougo/neocomplete.vim'
-"Plugin 'jiangmiao/auto-pairs'
-"---------------------------------------
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 call vundle#end()
-filetype indent plugin on
-syntax on
+filetype plugin on
+filetype indent on
 
-" >>>AIRLINE<<<
-set encoding=utf-8
-set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
-set term=xterm-256color
-set termencoding=utf-8q
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled = 0
-let g:airline_detect_whitespace=0
-" enable Powerline Font for mac
-let g:Powerline_symbols = 'fancy'   
+"{{{ [CtrlP] 
+" open last mode
+let g:ctrlp_cmd = 'call CallCtrlP()'
+func! CallCtrlP()
+    if exists('s:called_ctrlp')
+        CtrlPLastMode
+    else
+        let s:called_ctrlp = 1
+        CtrlPMRU
+    endif
+endfunc  
+nnoremap <leader>] :CtrlPTag<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+"}}}
 
-" >>>NERDTREE<<<
-map <C-x> :NERDTreeTabsToggle<CR>
-" quit if all buffer are closed, even NERDTree is open
-autocmd bufenter * 
-    \ if (winnr("$") == 1 && 
-    \ exists("b:NERDTreeType") && b:NERDTreeType == "primary") 
-    \ | q | endif
+" {{{ [SuperTab]
+"let g:SuperTabDefaultCompletionType = '<C-n>'
+" }}}
 
-" >>>Buffergator<<<
-let g:buffergator_viewport_split_policy="B"
-let g:buffergator_split_size=10
-
-" >>>RagTag<<<
-"inoremap <M-o>       <Esc>o
-"inoremap <C-j>       <Down>
-let g:ragtag_global_maps = 1
-
-" >>>Tag Bar<<<
-nmap <F8> :TagbarToggle<CR>
-
+" {{{ [neocomplete,neosnippet]
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#enable_auto_select = 0
+
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-Tab> '\<C-p>'
+
+" <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : '<Space>'
+
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Styles
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-hi MatchParen cterm=underline ctermbg=none ctermfg=none
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
-    
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Key Mappings 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader ="\\"
-let g:mapleader = "\\"
+" SuperTab like snippets behavior.
+"imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"        \ "\<Plug>(neosnippet_expand_or_jump)"
+"        \: pumvisible() ? "\<C-n>" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"        \ "\<Plug>(neosnippet_expand_or_jump)"
+"        \: "\<TAB>"
 
-" tabs
-nnoremap <S-Tab>        <C-w>w
-nnoremap <C-t><C-n>     :tabnew<CR>
-nnoremap <Leader>n      :tabn<CR>
-nnoremap <Leader>m      :tabp<CR>
-nnoremap <leader>1      1gt<CR>
-nnoremap <leader>2      2gt<CR>
-nnoremap <leader>3      3gt<CR>
-nnoremap <leader>4      4gt<CR>
-nnoremap <leader>5      5gt<CR>
-nnoremap <leader>6      6gt<CR>
-nnoremap <leader>7      7gt<CR>
-nnoremap <leader>8      8gt<CR>
-nnoremap <leader>9      9gt<CR>
-nnoremap <leader>0      10gt<CR>
+"let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
-" buffers
-nnoremap <leader>k      :bp<CR>
-nnoremap <leader>j      :bn<CR>
-nnoremap <leader>g      :e#<CR>
-nnoremap <leader>d      :bd<CR>
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
 
-nnoremap    <leader>w      :w!<cr>;                 " fast saving
-nnoremap    <leader>x      :q<cr>;                  " fast quit
-nnoremap    <leader>X      :q!<cr>;                 " fast quit
-nnoremap    <leader>r      :source ~/.vimrc<cr>;	" reload rc file
-nnoremap    <leader><cr>   :!<UP><cr>;              " execute last command
-nnoremap    <CR>           :nohlsearch<cr><cr>;     " disable highlight
-nmap        <C-d>          :sh<cr>
-nnoremap    <C-f>          <C-d>
-nnoremap    <C-b>          <C-u>
-nnoremap    <C-n>          :cn<cr>
-nnoremap    <C-m>          :cp<cr>
+" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? '\<C-n>' :
+"    \ <SID>check_back_space() ? '\<TAB>' :
+"    \ neocomplete#start_manual_complete()
+"function! s:check_back_space() 
+"    let col = col('.') - 1
+"    return !col || getline('.')[col - 1]  =~ '\s'
+"endfunction
+"}}}
 
-map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-nmap        <F5>           :set paste!<cr>;         " switch paste mode
-nmap        <F6>           :set nu!<cr>;            " switch line number
+"{{{ [Jedi-Vim]
+let g:jedi#completions_enabled=0
+let g:jedi#auto_vim_configuration = 0
+"}}}
 
+"{{{ [UltiSnips]
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<tab>"
+"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+"inoremap <expr><TAB> pumvisible() ? '\<C-n>' : '\<C-R>=UltiSnips#ExpandSnippet()'
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"}}}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tweaks
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"{{{ [Tagbar]
+nmap <F8> :TagbarToggle<CR>
+"}}}
+
+"{{{ [Vim-Surround]
+map <leader>s' ysiw'
+map <leader>s" ysiw"
+map <leader>s( ysiw)
+map <leader>s[ ysiw]
+map <leader>s{ ysiw}
+"}}}
+
+"{{{ [vim-markdown]
+let g:vim_markdown_folding_disabled=1
+"}}}
+
+" Plugin }}}
+
+"{{{ Tweaks
 
 " remember last edit position
 if has("autocmd")
@@ -191,21 +193,14 @@ if has("autocmd")
 endif
 
 " highlight column 80 and onwards
-let &colorcolumn="80,".join(range(120,999),",")
-highlight ColorColumn ctermbg=235 guibg=#2c2d27
+"let &colorcolumn="80,".join(range(120,999),",")
+let &colorcolumn="80"
+highlight ColorColumn ctermbg=109 guibg=#2c2d27
 
 if !has('gui_running')
 	set t_Co=256
 endif
 
-
-
-"" fix meta-keys which generate <Esc>a .. <Esc>z
-"let c='a'
-"while c <= 'z'
-  "exec "set <M-".toupper(c).">=\e".c
-  "exec "imap \e".c." <M-".toupper(c).">"
-  "let c = nr2char(1+char2nr(c))
-"endw
-"
-set t_ut=
+au BufNewFile,BufRead *.c,*.h,*.cpp set fdm=syntax
+au CompleteDone * pclose
+" Tweaks }}}
