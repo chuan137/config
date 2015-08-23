@@ -204,3 +204,5 @@ endif
 au BufNewFile,BufRead *.c,*.h,*.cpp set fdm=syntax
 au CompleteDone * pclose
 " Tweaks }}}
+"
+autocmd FileType gitcommit setlocal spell textwidth=72
