@@ -55,7 +55,7 @@ else
 ifeq ($(COPY),y)
 export_target = @cp -rfv "$<" "$@"
 else
-export_target = @ln -sfTv "$<" "$@"
+export_target = @ln --backup=t -sfTv "$<" "$@"
 endif
 endif
 
