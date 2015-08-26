@@ -1,0 +1,19 @@
+[alias]
+  st = status
+  gcat = cat-file -p
+  graph = log --graph --oneline --decorate --first-parent
+  all = log --graph --decorate --oneline --all --first-parent
+  ck = checkout
+  br = branch
+  amend = !EDITOR=: git commit --amend
+  rename = "!f() { git push origin origin/$1:refs/heads/$2 :$1; } ; f"
+[user]
+	name = Chuan Miao
+	email = chuan137@gmail.com
+[push]
+	default = simple
+[giggle]
+	main-window-maximized = false
+	main-window-geometry = 960x1021+1920+24
+	history-view-vpane-position = 697
+	file-view-vpane-position = 659
