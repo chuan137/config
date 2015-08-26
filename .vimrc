@@ -7,7 +7,7 @@ set nocompatible
 set laststatus=2
 set scrolloff=5
 set sidescrolloff=5
-set fo+=o           " use C-w to delte the comment symbol
+set fo+=o           
 set mouse=n
 set ttyfast
 
@@ -43,14 +43,13 @@ nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
 " Window
 set splitbelow
 set splitright
-nnoremap <S-Tab>    <C-w>w
 
 " mappings
 nnoremap <leader>g  :e#<CR>
 nnoremap <leader>q  :q!<CR>
 nnoremap <leader>w  :w<CR>
 nnoremap <leader>r  :source ~/.vimrc<cr>;   " Reload rc file
-nmap     <C-a>      :sh<CR>
+nmap     <C-s>      :sh<CR>
 " settings }}}
 
 "{{{ Plugin
@@ -58,12 +57,12 @@ nmap     <C-a>      :sh<CR>
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'kien/ctrlp.vim' 
 Plugin 'shougo/neocomplete'
 Plugin 'shougo/neosnippet.vim'
 Plugin 'Shougo/neosnippet-snippets'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 "Plugin 'SirVer/ultisnips'
 "Plugin 'jordwalke/VimCompleteLikeAModernEditor'
 "Plugin 'honza/vim-snippets'
@@ -73,6 +72,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'scrooloose/nerdcommenter'
 call vundle#end()
 filetype plugin on
 filetype indent on
@@ -92,21 +92,18 @@ nnoremap <leader>] :CtrlPTag<cr>
 nnoremap <leader>b :CtrlPBuffer<cr>
 "}}}
 
-" {{{ [SuperTab]
-"let g:SuperTabDefaultCompletionType = '<C-n>'
-" }}}
-
 " {{{ [neocomplete,neosnippet]
 let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#enable_smart_case = 0         " vim bug
+let g:neocomplete#enable_fuzzy_completion = 0   " vim bug
 
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-Tab> '\<C-p>'
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-Tab> '<C-p>'
 
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
@@ -127,12 +124,12 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-"imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"        \ "\<Plug>(neosnippet_expand_or_jump)"
-"        \: pumvisible() ? "\<C-n>" : "\<TAB>"
-"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"        \ "\<Plug>(neosnippet_expand_or_jump)"
-"        \: "\<TAB>"
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: "\<TAB>"
 
 "let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
@@ -152,17 +149,8 @@ endif
 "}}}
 
 "{{{ [Jedi-Vim]
-let g:jedi#completions_enabled=0
-let g:jedi#auto_vim_configuration = 0
-"}}}
-
-"{{{ [UltiSnips]
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<tab>"
-"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-"inoremap <expr><TAB> pumvisible() ? '\<C-n>' : '\<C-R>=UltiSnips#ExpandSnippet()'
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"let g:jedi#completions_enabled=0
+"let g:jedi#auto_vim_configuration = 0
 "}}}
 
 "{{{ [Tagbar]
