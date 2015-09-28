@@ -189,7 +189,7 @@ if !has('gui_running')
 	set t_Co=256
 endif
 
-au BufNewFile,BufRead *.c,*.h,*.cpp set fdm=syntax
+au BufRead,BufNewFile *.cl set filetype=c
 au CompleteDone * pclose
 " Tweaks }}}
 "
