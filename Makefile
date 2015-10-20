@@ -25,7 +25,7 @@ EXPORT = $(shell find "$(SRC_ROOT)" -maxdepth 1 -name '.*' $(patsubst %,-not -na
 
 EXPORT_APPEND =
 EXPORT_CONTENT = .ssh
-NO_EXPORT = .git* .mailmap *.pid $(EXPORT_CONTENT)
+NO_EXPORT = .git* .mailmap *.pid .*swp $(EXPORT_CONTENT)
 
 # The global .gitignore conflicts with the repo's own .gitignore, so the global
 # one can be stored in the repo as .gitignore.export.
