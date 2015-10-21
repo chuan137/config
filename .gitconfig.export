@@ -1,8 +1,10 @@
 [alias]
   st = status
   gcat = cat-file -p
+  lg = log --color --graph --pretty=format:'%Cgreen%ad%Creset %C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(cyan)[%an] %C(green)(%cr)%Creset' --abbrev-commit --date=short
+  all = log --color --graph --pretty=format:'%Cgreen%ad%Creset %C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(cyan)[%an] %C(green)(%cr)%Creset' --abbrev-commit --date=short --all
   graph = log --graph --oneline --decorate --first-parent
-  all = log --graph --decorate --oneline --all --first-parent
+  alll = log --graph --decorate --oneline --all --first-parent
   ck = checkout
   br = branch
   amend = !EDITOR=: git commit --amend
