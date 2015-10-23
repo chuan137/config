@@ -51,7 +51,6 @@ nnoremap <leader>w  :w<CR>
 nnoremap <leader>r  :source ~/.vimrc<cr>;   " Reload rc file
 nmap     <C-s>      :sh<CR>
 " settings }}}
-
 "{{{ Plugin
 "
 filetype off
@@ -73,6 +72,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'christoomey/vim-tmux-navigator'
 call vundle#end()
 filetype plugin on
 filetype indent on
@@ -170,7 +170,6 @@ let g:vim_markdown_folding_disabled=1
 "}}}
 
 " Plugin }}}
-
 "{{{ Tweaks
 
 " remember last edit position
