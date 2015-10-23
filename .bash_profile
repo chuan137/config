@@ -62,6 +62,10 @@ then
 fi
 #}}}
 #{{{ Prompt
+# Set GIT aware prompt
+export GITAWAREPROMPT=~/.git-aware-prompt
+source "$GITAWAREPROMPT/main.sh"
+
 # Set different prompt on ssh login
 if [ -n "$SSH_CLIENT" ]; then
     source "$GITAWAREPROMPT/main.sh"
@@ -74,10 +78,6 @@ fi
 case $(ps -o comm $PPID) in *vi|*vim)
   PS1="\[\033[1;33m\](VIM $(ps $PPID | awk '{print $NF}' | sed 1d)) \[\033[0m\]" ;;
 esac
-
-# Set GIT aware prompt
-export GITAWAREPROMPT=~/.git-aware-prompt
-source "$GITAWAREPROMPT/main.sh"
 #}}}
 #{{{ Term
 if [[ -z $TMUX ]]; then
