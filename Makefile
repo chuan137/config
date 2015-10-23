@@ -16,6 +16,7 @@ SHELL = /bin/bash
 
 SRC_ROOT = $(CURDIR)
 DST_ROOT = $(HOME)
+UNAME = $(shell uname)
 
 # By default, export all files or directories starting with a dot, minus git
 # files.

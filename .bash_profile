@@ -94,10 +94,7 @@ else
     fi
 fi
 #}}}
-
-# disable C-s C-q
-stty -ixon
-
+#{{{ tmux functions
 # commands for moving windows in tmux: execute 
 #   movetmuxwindow $n1 $n2
 # will move the n1'th window to n2'th window
@@ -136,3 +133,8 @@ tx-mvwindow() {
 }
 
 tx-renumber() { tmux move-window -r; tmux refresh-client -S; }
+#}}}
+
+# disable C-s C-q
+stty -ixon
+
