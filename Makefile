@@ -28,7 +28,7 @@ EXPORT = $(shell find "$(SRC_ROOT)" -maxdepth 1 -name '.*' $(patsubst %,-not -na
 
 EXPORT_APPEND =
 EXPORT_CONTENT = .ssh
-NO_EXPORT = .git* .mailmap *.pid .*swp $(EXPORT_CONTENT)
+NO_EXPORT = .git* .dotfiles .mailmap *.pid .*swp $(EXPORT_CONTENT)
 
 # The global .gitignore conflicts with the repo's own .gitignore, so the global
 # one can be stored in the repo as .gitignore.export.
@@ -59,7 +59,7 @@ else
 ifeq ($(COPY),y)
 export_target = @cp -rfv "$<" "$@"
 else
-export_target = [[ -e "$@" ]] && ln --backup=t -sfTv "$<" "$@" || ln -sfv "$<" "$@"
+export_target = @[[ -f "$@" ]] && ln --backup=t -sfv "$<" "$@" || ln -sfv "$<" "$@"
 endif
 endif
 
