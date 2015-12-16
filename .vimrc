@@ -2,6 +2,7 @@
 colorscheme digerati
 filetype plugin on
 filetype indent on
+syntax on
 
 set nocompatible
 set laststatus=2

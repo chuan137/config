@@ -24,7 +24,14 @@ export MPI_C_LIBRARIES=/opt/mpich/ch-p4/lib64
 
 # python virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenv
-source /usr/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# default editor
+export VISUAL=vim
+export EDIT=$VISUAL
 #}}}
 #{{{ Aliases
 # OS specific settings

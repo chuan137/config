@@ -16,12 +16,14 @@ SHELL = /bin/bash
 
 SRC_ROOT = $(CURDIR)
 DST_ROOT = $(HOME)
-UNAME = $(shell uname)
+KERNEL = $(shell uname -s)
 
 # By default, export all files or directories starting with a dot, minus git
-# files.
+# files. In addition, export all files in kernel-dependent directories, e.g.,
+# Darwin/ or Linux/.
 EXPORT = $(shell find "$(SRC_ROOT)" -maxdepth 1 -name '.*' $(patsubst %,-not -name '%',$(NO_EXPORT))) \
 		 $(shell find $(addprefix "$(SRC_ROOT)"/,$(EXPORT_CONTENT)) -mindepth 1 -type f 2>/dev/null) \
+ 		 $(shell find "$(SRC_ROOT)/$(KERNEL)" -name '.*' -mindepth 1 -type f 2>/dev/null) \
 		 $(wildcard $(addprefix $(SRC_ROOT)/,$(EXPORT_APPEND)))
 
 EXPORT_APPEND =
@@ -38,7 +40,8 @@ REMOTE_NAME = origin
 REMOTE_BRANCH = $(shell git symbolic-ref HEAD)
 
 export_dst = \
-	$(patsubst $(SRC_ROOT)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/%,$(EXPORT))) \
+	$(patsubst $(SRC_ROOT)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/%,$(filter-out $(SRC_ROOT)/$(KERNEL)/%,$(EXPORT)))) \
+	$(patsubst $(SRC_ROOT)/$(KERNEL)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/$(KERNEL)/%,$(EXPORT))) \
 	$(patsubst %,$(DST_ROOT)/%,$(filter-out $(SRC_ROOT)/%,$(EXPORT)))
 
 explicit_export_dst = \
@@ -56,7 +59,7 @@ else
 ifeq ($(COPY),y)
 export_target = @cp -rfv "$<" "$@"
 else
-export_target = @ln --backup=t -sfTv "$<" "$@"
+export_target = [[ -e "$@" ]] && ln --backup=t -sfTv "$<" "$@" || ln -sfv "$<" "$@"
 endif
 endif
 
@@ -77,6 +80,9 @@ install : $(export_dst) $(explicit_export_dst) $(AUTHORIZED_KEYS)
 	$(install_append)
 
 $(DST_ROOT)/% : $(SRC_ROOT)/%
+	$(mkdir_and_export_target)
+
+$(DST_ROOT)/% : $(SRC_ROOT)/$(KERNEL)/%
 	$(mkdir_and_export_target)
 
 $(explicit_export_dst) : $(DST_ROOT)/% : $(SRC_ROOT)/%.export
@@ -109,8 +115,8 @@ import :
 
 .PHONY : uninstall
 uninstall :
-	@rm $(patsubst %,\"%\",$(export_dst))
-	@rm $(patsubst %,\"%\",$(explicit_export_dst))
+	@rm -f $(patsubst %,"%",$(explicit_export_dst))
+	@rm -f $(patsubst %,"%",$(export_dst))
 
 .PHONY : update
 update :
