@@ -1,196 +1,95 @@
-"{{{ settings
+" some default settings {{{ 
 colorscheme digerati
 filetype plugin on
 filetype indent on
 syntax on
+"}}}
 
-set nocompatible
-set laststatus=2
-set scrolloff=5
-set sidescrolloff=5
-set fo+=o           
-set mouse=n
-set ttyfast
+" tab/indent
+set tabstop=2
+set softtabstop=2
+set expandtab
+set shiftwidth=2
 
-set hidden
-set tabstop=4
-set shiftwidth=4
-set expandtab       " Convert tab to space
-set smarttab		" <BS> delte spaces acorrding to shiftwidth
-set autoindent      " ...
-set smartindent     " ...
+" basic mappings
+nnoremap <leader>w  :w<CR>
+nnoremap <leader>g  :e#<CR>
+nnoremap <leader>r  :so ~/.vimrc<CR>
 
-set wildmenu                
-set wildmode=longest:full,full
-set wildignore=*.o,*.obj,*~ 
-set wildignore+=*.so,*.swp,*.zip
-set wildignore+=*/node_modules/*,*/tmp/*,*/errors/*
+"nnoremap <F5> :set paste!<CR>
+set pastetoggle=<F5>
 
-" search settings
-set incsearch       " find the next match as we type
-set hlsearch        " Highlight search
-set viminfo^=h      " Start with no highlighting
-set ignorecase      " ignore case in search
-set smartcase        
-
-" Folding
+" folding
 set foldenable
 set foldmethod=marker
 set foldopen-=block
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+set foldlevel=1		"leave top level folding open
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>;		
 nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
 nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
+" toggle folding with <space>
+" {,} paragraph jump, ignoring empty lines inside closed folding
 
-" Window
-set splitbelow
-set splitright
+"wildmenu                
+set wildmenu
+set wildignore=*.o,*.obj,*~ 
+set wildignore+=*.so,*.swp,*.zip
+set wildignore+=*/node_modules/*,*/tmp/*,*/errors/*
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    en
+        return ''
+endfunction
 
-" mappings
-nnoremap <leader>g  :e#<CR>
-nnoremap <leader>q  :q!<CR>
-nnoremap <leader>w  :w<CR>
-nnoremap <leader>r  :source ~/.vimrc<cr>;   " Reload rc file
-nmap     <C-s>      :sh<CR>
-" settings }}}
-"{{{ Plugin
-"
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+set hidden    "allow swiching buffer without saving
+set fo+=o     "format options
+set mouse=n
+set ttyfast
+"}}}
+
+"{{{ Plugin management with neobundle.vim
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'kien/ctrlp.vim' 
-Plugin 'shougo/neocomplete'
-Plugin 'shougo/neosnippet.vim'
-Plugin 'Shougo/neosnippet-snippets'
-"Plugin 'davidhalter/jedi-vim'
-"Plugin 'SirVer/ultisnips'
-"Plugin 'jordwalke/VimCompleteLikeAModernEditor'
-"Plugin 'honza/vim-snippets'
-Plugin 'osyo-manga/vim-marching'
-Plugin 'majutsushi/tagbar'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'christoomey/vim-tmux-navigator'
-call vundle#end()
-filetype plugin on
-filetype indent on
-
-"{{{ [CtrlP] 
-" open last mode
-let g:ctrlp_cmd = 'call CallCtrlP()'
-func! CallCtrlP()
-    if exists('s:called_ctrlp')
-        CtrlPLastMode
-    else
-        let s:called_ctrlp = 1
-        CtrlPMRU
-    endif
-endfunc  
-nnoremap <leader>] :CtrlPTag<cr>
-nnoremap <leader>b :CtrlPBuffer<cr>
-"}}}
-
-" {{{ [neocomplete,neosnippet]
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#enable_smart_case = 0         " vim bug
-let g:neocomplete#enable_fuzzy_completion = 0   " vim bug
-
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-Tab> '<C-p>'
-
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : '<Space>'
-
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: "\<TAB>"
-
-"let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-
-" For conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
+if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-" <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? '\<C-n>' :
-"    \ <SID>check_back_space() ? '\<TAB>' :
-"    \ neocomplete#start_manual_complete()
-"function! s:check_back_space() 
-"    let col = col('.') - 1
-"    return !col || getline('.')[col - 1]  =~ '\s'
-"endfunction
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'hynek/vim-python-pep8-indent'
+
+call neobundle#end()
+filetype plugin indent on
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
 "}}}
 
-"{{{ [Jedi-Vim]
-"let g:jedi#completions_enabled=0
-"let g:jedi#auto_vim_configuration = 0
+"{{{ cheet sheets
+"{{{ Vim folding commands
+"	 ---------------------------------
+"	 zf#j creates a fold from the cursor down # lines.
+"	 zf/ string creates a fold from the cursor to string .
+"	 zj moves the cursor to the next fold.
+"	 zk moves the cursor to the previous fold.
+"	 za toggle a fold at the cursor.
+"	 zo opens a fold at the cursor.
+"	 zO opens all folds at the cursor.
+"	 zc closes a fold under cursor. 
+"	 zm increases the foldlevel by one.
+"	 zM closes all open folds.
+"	 zr decreases the foldlevel by one.
+"	 zR decreases the foldlevel to zero -- all folds will be open.
+"	 zd deletes the fold at the cursor.
+"	 zE deletes all folds.
+"	 [z move to start of open fold.
+"	 ]z move to end of open fold.
 "}}}
-
-"{{{ [Tagbar]
-nmap <F8> :TagbarToggle<CR>
+"{{{
 "}}}
-
-"{{{ [Vim-Surround]
-map <leader>s' ysiw'
-map <leader>s" ysiw"
-map <leader>s( ysiw)
-map <leader>s[ ysiw]
-map <leader>s{ ysiw}
 "}}}
-
-"{{{ [vim-markdown]
-let g:vim_markdown_folding_disabled=1
-"}}}
-
-" Plugin }}}
-"{{{ Tweaks
-
-" remember last edit position
-if has("autocmd")
-  au BufReadPost * 
-      \ if line("'\"") > 1 && line("'\"") <= line("$") 
-      \ | exe "normal! g'\"" | endif
-endif
-
-" highlight column 80 and onwards
-"let &colorcolumn="80,".join(range(120,999),",")
-let &colorcolumn="80"
-highlight ColorColumn ctermbg=109 guibg=#2c2d27
-
-if !has('gui_running')
-	set t_Co=256
-endif
-
-au BufRead,BufNewFile *.cl set filetype=c
-au CompleteDone * pclose
-" Tweaks }}}
-"
-autocmd FileType gitcommit setlocal spell textwidth=72
