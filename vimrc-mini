@@ -1,0 +1,47 @@
+syntax on
+set nocompatible
+set hidden
+set number
+set mouse=n
+set t_Co=256
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set smarttab
+set expandtab
+set foldmethod=marker
+set backspace=2
+
+set noerrorbells
+set visualbell
+set list
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
+
+nnoremap <leader>g  :e#<CR>
+nnoremap <leader>v  :so %<CR>
+nnoremap ; :
+
+set runtimepath+=~/.vim/b/neocomplete.vim/
+set runtimepath+=~/.vim/b/neco-syntax/
+set runtimepath+=~/.vim/b/neco-vim/
+
+let g:neocomplete#enable_at_startup=1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_camel_case = 1
+let g:neocomplete#enable_fuzzy_completion = 1
+let g:neocomplete#max_list = 20
+let g:neocomplete#sources = {}
+let g:neocomplete#sources._ = ['file', 'omni', 'buffer', 'syntax']
+let g:neocomplete#sources.vim = g:neocomplete#sources._ + ['vim']
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+noremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags

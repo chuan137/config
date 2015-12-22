@@ -1,0 +1,112 @@
+syntax on
+colorscheme molokai
+
+set nocompatible
+set hidden
+set number
+set relativenumber
+set mouse=n
+set t_Co=256
+
+set tabstop=2         
+set softtabstop=2     
+set shiftwidth=2 
+set smarttab
+set expandtab
+set foldmethod=marker
+
+nnoremap <leader>g  :e#<CR>
+nnoremap <leader>v  :so %<CR>
+
+set runtimepath+=~/.vim/b/neobundle.vim/
+call neobundle#begin(expand('~/.vim/b/'))
+"{{{
+NeoBundleFetch 'Shougo/neobundle.vim' 
+
+NeoBundle 'Shougo/vimproc.vim', {'build': {'mac': 'make', 'unix': 'make'}}
+NeoBundle 'Shougo/neocomplete.vim' ", {
+"      \     'depends' : [
+"      \       'Shougo/context_filetype.vim', 
+"      \       'Shougo/neco-vim', 
+"      \       'Shougo/neco-syntax'],
+"      \ }
+
+"}}}
+call neobundle#end()
+filetype plugin indent on
+NeoBundleCheck
+
+" +++ plugin/config 
+if neobundle#tap('neocomplete.vim') "{{{
+  let g:neocomplete#enable_at_startup=1
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#enable_camel_case = 1
+    let g:neocomplete#enable_fuzzy_completion = 1
+    let g:neocomplete#max_list = 20
+    let g:neocomplete#sources = {}
+    let g:neocomplete#sources._ = ['file', 'omni', 'buffer', 'syntax']
+    let g:neocomplete#sources.vim = g:neocomplete#sources._ + ['vim']
+  endfunction
+  call neobundle#untap()
+endif "}}}
+
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+noremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+"  let g:neocomplete#enable_at_startup = 1
+"  let g:neocomplete#enable_fuzzy_completion = 1
+"  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"  "let g:neocomplete#max_list = 20
+"
+"  let g:neocomplete#sources = {}
+"  let g:neocomplete#sources._ = ['file', 'omni', 'buffer', 'syntax', 'member', 'dictionary']
+"  let g:neocomplete#sources.vim = g:neocomplete#sources._ + ['vim']
+"
+"  " add customized dictionaries
+"  let g:neocomplete#sources#dictionary#dictionaries = {
+"        \ 'default': '',
+"        \ 'vimshell': $HOME.'./.vimshell_hist',
+"        \ 'scheme': $HOME.'./.gosh_completions'
+"        \ }
+"
+"  inoremap <expr><C-g> neocomplete#undo_completion()
+"  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+"
+"  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"  function! s:my_cr_function() "{{{
+"    return pumvisible() ? "\<C-y>" : "\<CR>"
+"  endfunction "}}}
+"
+"  imap <expr><TAB> pumvisible() ? "\<C-n>" :
+"        \ neosnippet#expandable_or_jumpable() ?
+"        \ neosnippet#mappings#jump_or_expand_impl() :
+"        \ <SID>check_back_space() ? "\<TAB>" :
+"        \ neocomplete#start_manual_complete()
+"  function! s:check_back_space() "{{{
+"    let col = col('.') - 1
+"    return !col || getline('.')[col - 1]  =~ '\s'
+"  endfunction "}}}
+"
+"  " Enable omni completion.
+"
+"call neobundle#begin(expand('~/.vim/bundle/'))
+"NeoBundleFetch 'Shougo/neobundle.vim'
+"
+"NeoBundle 'Shougo/vimproc.vim'
+"NeoBundle 'Shougo/neocomplete.vim'
+"NeoBundle 'Shougo/neco-vim'
+"NeoBundle 'Shougo/neco-syntax'
+"
+"call neobundle#end()
+"
