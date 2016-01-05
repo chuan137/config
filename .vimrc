@@ -204,6 +204,7 @@ NeoBundle 'hynek/vim-python-pep8-indent'
 NeoBundle 'tpope/vim-commentary'  " comments
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Rykka/riv.vim'
+NeoBundle 'Rykka/instantrst'
 
 "NeoBundle 'chrismccord/bclose.vim'
 call neobundle#end()
