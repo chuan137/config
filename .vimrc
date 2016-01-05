@@ -1,6 +1,6 @@
-"==================================================
+"=======================================================
 "   settings/mappings 
-"==================================================
+"=======================================================
 " +++ minimal {{{
 syntax on
 filetype plugin on    " enable ftplugin scripts
@@ -9,13 +9,10 @@ filetype indent on    " enable filetype specific indent scripts
 nnoremap ; :
 nnoremap <leader>w  :w<CR>
 nnoremap <leader>g  :e#<CR>
-""nnoremap <silent> <Leader>ev  :e ~/.vimrc<CR>
-"nnoremap <silent> <leader>sv  :so ~/.vimrc<CR>
-"make vim save and load the folding of the document each time it loads"
-"""also places the cursor in the last place that it was left.""
-""
-noremap <silent><F5> :set paste!<CR>
-noremap <silent><F8> :TagbarToggle<CR>
+nnoremap <silent> <Leader>ev  :e ~/.vimrc<CR>
+nnoremap <silent> <leader>sv  :so ~/.vimrc<CR>
+nnoremap <silent><F5> :set paste!<CR>
+nnoremap <silent><F8> :TagbarToggle<CR>
 
 set nocompatible      " be iMproved
 set hidden            " hidden buffer: allow swiching without saving
@@ -33,6 +30,8 @@ set foldenable
 set foldmethod=marker
 set foldopen-=block   " jump to next paragraph w/o opening folds
 set foldlevel=0		    " un/open top level folds
+set foldcolumn=2
+set foldnestmax=3
 
 " search settings
 set incsearch         " find the next match as we type
@@ -70,6 +69,10 @@ set fo=crqnj1o        " read manual fo-table
 
 " toggle folding with <space>
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+
+" delete/change word in the middle of the word
+"inoremap <C-BS> <C-O>b<C-O>dw
+"noremap <C-BS> diw
 
 " *** window / buffer switching {{{
 " <leader><number> is mapped to open buffer <number>
@@ -128,26 +131,14 @@ nnoremap <Leader>q :bd<CR>
   vnoremap } j}<BS> 
 " }}}
 " *** remember last edit position {{{
-"make vim save and load the folding of the document each time it loads"
-"""also places the cursor in the last place that it was left.""
 if has("autocmd")
-  "make vim save and load the folding of the document each time it loads"
-  """also places the cursor in the last place that it was left."
-  au BufWinLeave *.* mkview
-  au BufWinEnter *.* silent loadview
-
-"  au BufReadPost * 
-"        \ if line("'\"") > 1 && line("'\"") <= line("$") 
-"        \ | exe "normal! g'\"" | endif
+  "au BufWinLeave *.* mkview
+  "au BufWinEnter *.* silent loadview
+  au BufReadPost * 
+        \ if line("'\"") > 1 && line("'\"") <= line("$") 
+        \ | exe "normal! g'\"" | endif
 endif
 "}}}
-
-" delete/change word in the middle of the word
-"inoremap <C-BS> <C-O>b<C-O>dw
-"noremap <C-BS> diw
-"nnoremap <expr>dw <SID>check_cursor_space() ? "dw" : "daw"
-"nnoremap cw caw
-"
 " }}}
 " +++ color {{{
 " enable rich colors in console
@@ -158,9 +149,12 @@ endif
 " color scheme retouch
 autocmd ColorScheme * highlight Pmenu ctermbg=brown
 autocmd ColorScheme * highlight PmenuSel ctermfg=25 ctermbg=3
-autocmd ColorScheme * highlight LineNr ctermfg=236
+autocmd ColorScheme * highlight LineNr ctermfg=236 ctermbg=234
+autocmd ColorScheme * highlight CursorLineNr ctermbg=234
+autocmd ColorScheme * highlight FoldColumn ctermfg=12 ctermbg=235
+autocmd ColorScheme * highlight Folded cterm=bold ctermfg=12 ctermbg=234
 
-"has to be put at the end of file, in order to make above autocmds work
+"has to be put at the end of file, in order above autocmds work
 colorscheme molokai
 "}}}
 " +++ functions {{{
@@ -179,9 +173,9 @@ endfunction
 "}}}
 "}}}
 "
-"==================================================
+"=======================================================
 "   Plugins Management 
-"==================================================
+"=======================================================
 " +++ Plugin Management [neobundle] {{{
 filetype off
 if has('vim_starting')
@@ -194,32 +188,24 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'jiangmiao/auto-pairs'
-
 NeoBundle 'Shougo/vimproc.vim', { 
-      \ 'build' : {
-      \     'mac' : 'make',
-      \     'linux' : 'make',
-      \    },
+      \ 'build' : { 'mac' : 'make', 'linux' : 'make', }, 
       \ } 
-"NeoBundle 'Shougo/unite.vim'
-"NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/neopairs.vim'
-NeoBundle 'Shougo/neoinclude.vim'
 NeoBundle 'Shougo/neco-vim'
 NeoBundle 'Shougo/neco-syntax'
+NeoBundle 'Shougo/neopairs.vim'
+NeoBundle 'Shougo/neoinclude.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'Shougo/neomru.vim'
-
+NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'hynek/vim-python-pep8-indent'
-NeoBundle 'sickill/vim-monokai'
-NeoBundle 'chrismccord/bclose.vim'
 NeoBundle 'tpope/vim-commentary'  " comments
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'Rykka/riv.vim'
 
+"NeoBundle 'chrismccord/bclose.vim'
 call neobundle#end()
 filetype plugin indent on
 " If there are uninstalled bundles found on startup,
@@ -227,9 +213,9 @@ filetype plugin indent on
 NeoBundleCheck
 "}}}
 "
-"==================================================
+"=======================================================
 "   Plugin Configs
-"==================================================
+"=======================================================
 if neobundle#tap('neocomplete.vim') "{{{
   let g:neocomplete#enable_at_startup = 1
   function! neobundle#tapped.hooks.on_source(bundle)
@@ -264,26 +250,26 @@ if neobundle#tap('ctrlp.vim') "{{{
   let g:ctrlp_extensions = ['buffertag', 'dir']
   let g:ctrlp_cmd = 'call CallCtrlP()'
 
-  nnoremap <Leader>f :CtrlPMRU<CR>
+  nnoremap <Leader>f :CtrlP<CR>
   nnoremap <Leader>t :CtrlPBufTag<CR>
-  nnoremap <C-P> <C-W>J:CtrlP<CR>
 
   func! CallCtrlP()
+    wincmd J
     if exists('s:called_ctrlp')
       CtrlPLastMode
     else
       let s:called_ctrlp = 1
-      CtrlP
+      CtrlPMRU
     endif
   endfunc  
 
   call neobundle#untap()
 endif "}}}
-" *** plugin/neosnippet {{{
-imap <C-I>     <Plug>(neosnippet_expand_or_jump)
-smap <C-I>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-I>     <Plug>(neosnippet_expand_target)
-" }}}
+if neobundle#tap('neosnippet') "{{{
+  imap <C-I>     <Plug>(neosnippet_expand_or_jump)
+  smap <C-I>     <Plug>(neosnippet_expand_or_jump)
+  xmap <C-I>     <Plug>(neosnippet_expand_target)
+endif "}}}
 " *** remapping <TAB>,<CR>,<BS>{{{
 " for neocomplete functioning better
 if neobundle#is_installed('neocomplete.vim') &&
@@ -338,9 +324,9 @@ endfunction
 
 " }}}
 
-"==================================================
+"=======================================================
 "   Cheet Sheets
-"==================================================
+"=======================================================
 "{{{ >>> Vim folding commands
 "	 ---------------------------------
 "	 zf#j creates a fold from the cursor down # lines.
@@ -360,6 +346,6 @@ endfunction
 "	 [z move to start of open fold.
 "	 ]z move to end of open fold.
 "}}}
-"
+"{{{ >>> Table Mode
+"}}}
 
-" vim:fen:fdm=marker:fmr={{{,}}}:fdl=0:fdc=1:ts=2:sw=2:sts=2
