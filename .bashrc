@@ -28,6 +28,8 @@ if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
     source $HOME/.local/bin/virtualenvwrapper.sh
 elif [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     source /usr/local/bin/virtualenvwrapper.sh
+elif [ -f /usr/bin/virtualenvwrapper.sh ]; then
+    source /usr/bin/virtualenvwrapper.sh
 fi
 
 export LC_ALL=en_US.UTF-8
@@ -79,10 +81,10 @@ source "$GITAWAREPROMPT/main.sh"
 
 # Set different prompt on ssh login
 if [ -n "$SSH_CLIENT" ]; then
-    source "$GITAWAREPROMPT/main.sh"
-    export PS1='\[\033[0;36m\]\h \[\033[0;32m\]\W $git_branch$git_dirty:> \[\033[0m\]'
+    #source "$GITAWAREPROMPT/main.sh"
+    export PS1='\[\033[0;36m\]\h \[\033[0;32m\]\W\[\033[1;33m\]$git_branch$git_dirty \[\033[0;32m\]> \[\033[0m\]'
 else
-    export PS1='\[\033[0;32m\]\W \[\033[1;33m\]$git_branch$git_dirty \[\033[0;32m\]:> \[\033[0m\]'
+    export PS1='\[\033[0;32m\]\W\[\033[1;33m\]$git_branch$git_dirty \[\033[0;32m\]> \[\033[0m\]'
 fi
 
 # Different prompt on invoking cmd from vim
