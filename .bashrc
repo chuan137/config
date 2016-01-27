@@ -40,12 +40,23 @@ export VISUAL=vim
 export EDIT=$VISUAL
 #}}}
 #{{{ Aliases
-# OS specific settings
+alias ll="ls -l"
+alias la="ls_all"
+alias ltr="ls_ltr"
+alias l="ll"
+alias du="du -h"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias vi="vim -X"
+alias le='less'
+#}}}
+# OS dependent settings#{{{
 case "$(uname -s)" in
     Darwin)
         alias imagej='java -Xmx1024m -jar /Applications/ImageJ/ImageJ64.app/Contents/Resources/Java/ij.jar'
         alias ls="gls --color --group-directories-first"
         alias vim="/usr/local/bin/vim"
+        alias rm="rm_mac"
         ;;
     Linux)
         alias open='xdg-open 2>/tmp/xdg-open'
@@ -54,15 +65,6 @@ case "$(uname -s)" in
     default)
         echo 'unknown os'
 esac
-
-alias l="ls -l"
-alias ll="ls -la"
-alias la='ls -A'
-alias ltr="ls -ltr"
-alias du="du -h"
-alias ..='cd ..'
-alias ...='cd ../..'
-alias vi="vim -X"
 #}}}
 #{{{ key binding with readline
 if [ -t 1 ]
@@ -147,7 +149,24 @@ tx-mvwindow() {
 
 tx-renumber() { tmux move-window -r; tmux refresh-client -S; }
 #}}}
+#{{{ Functions
+function ls_all {
+  ls -al "$@" | more -R
+}
 
-# disable C-s C-q
+function ls_ltr {
+  ls -ltr "$@" | more -R
+}
+
+function rm_mac {
+  args=""
+  for var in "$@"; do
+    var="\"${var}\" "
+    [[ $var == \"-* ]] && args=${var}$args || args+=${var}
+  done
+  eval /bin/rm ${args}
+}
+#}}}
+
+# disable C-s C-q in ssh session
 stty -ixon
-
