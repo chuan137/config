@@ -2,35 +2,23 @@
 # define the root directory of local bin, lib and etc.
 # first choice is ~/.local
 # then ~/usr
+
 test -d $HOME/.local && export LOCAL=$HOME/.local || export LOCAL=$HOME/usr
 
 export PATH=$LOCAL/bin:$PATH
+
 export PKG_CONFIG_PATH=$LOCAL/lib/pkgconfig:$PKG_CONFIG_PATH
-export LD_LIBRARY_PATH=$LOCAL/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LOCAL/lib64:$LOCAL/lib:$LD_LIBRARY_PATH
 export C_INCLUDE_PATH=$LOCAL/include:$C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH=$LOCAL/include:$CPLUS_INCLUDE_PATH
 export GI_TYPELIB_PATH=$LOCAL/lib/girepository-1.0:$GI_TYPELIB_PATH
 
-export GOROOT=$LOCAL/go
-export GOPATH=$LOCAL/gopkg
-export PATH=$GOPATH:$GOPATH/bin:$GOROOT/bin:$PATH
-
 # PATH for CUDA
-#export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 # PATH for MPI
 export MPI_C_INCLUDE_PATH=/opt/mpich/include
 export MPI_C_LIBRARIES=/opt/mpich/ch-p4/lib64
-
-# python virtualenv wrapper
-export WORKON_HOME=$HOME/.virtualenv
-if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then 
-    source $HOME/.local/bin/virtualenvwrapper.sh
-elif [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-    source /usr/local/bin/virtualenvwrapper.sh
-elif [ -f /usr/bin/virtualenvwrapper.sh ]; then
-    source /usr/bin/virtualenvwrapper.sh
-fi
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -49,6 +37,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias vi="vim -X"
 alias le='less'
+alias make='make -j4'
 #}}}
 # OS dependent settings#{{{
 case "$(uname -s)" in
@@ -57,6 +46,7 @@ case "$(uname -s)" in
         alias ls="gls --color --group-directories-first"
         alias vim="/usr/local/bin/vim"
         alias rm="rm_mac"
+        export PATH=$HOME/.pyenv/shims:$PATH
         ;;
     Linux)
         alias open='xdg-open 2>/tmp/xdg-open'
@@ -77,10 +67,6 @@ then
 fi
 #}}}
 #{{{ Prompt
-# Set GIT aware prompt
-export GITAWAREPROMPT=~/.git-aware-prompt
-source "$GITAWAREPROMPT/main.sh"
-
 # Set different prompt on ssh login
 if [ -n "$SSH_CLIENT" ]; then
     #source "$GITAWAREPROMPT/main.sh"
@@ -165,6 +151,23 @@ function rm_mac {
     [[ $var == \"-* ]] && args=${var}$args || args+=${var}
   done
   eval /bin/rm ${args}
+}
+#}}}
+#{{{ Extra functions
+# python virtualenv wrapper
+function exbash {
+export WORKON_HOME=$HOME/.virtualenv
+if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then 
+    source $HOME/.local/bin/virtualenvwrapper.sh
+elif [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    source /usr/local/bin/virtualenvwrapper.sh
+elif [ -f /usr/bin/virtualenvwrapper.sh ]; then
+    source /usr/bin/virtualenvwrapper.sh
+fi
+
+# Set GIT aware prompt
+export GITAWAREPROMPT=~/.git-aware-prompt
+source "$GITAWAREPROMPT/main.sh"
 }
 #}}}
 
