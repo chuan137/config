@@ -1,0 +1,107 @@
+syntax on
+filetype plugin on    " enable ftplugin scripts
+filetype indent on    " enable filetype specific indent scripts
+colorscheme industry
+
+"{{{ minimal
+set nocompatible      " be iMproved
+set hidden            " hidden buffer: allow swiching without saving
+set tabstop=4         " display tab as 2 spaces
+set softtabstop=4     " insert tab as 2 spaces
+set shiftwidth=4      " set each indent level as 2 spaces
+set smarttab          " <BS> delete spaces according to shiftwidth
+set expandtab         " expand tab to real spaces
+set backspace=2       " fix backspace problem on mac
+set number            " line number
+set relativenumber
+set foldmethod=marker
+set mouse=n
+" search settings
+set incsearch         " find the next match as we type
+set hlsearch          " Highlight search
+set viminfo^=h        " Start with no highlighting
+set ignorecase        " ignore case in search
+set smartcase        
+" enable Tab completion in command mode
+set wildmenu
+set wildmode=longest:full,full
+set wildignore=*.o,*.obj,*~ 
+set wildignore+=*.so,*.swp,*.zip
+set wildignore+=*/node_modules/*,*/tmp/*,*/errors/*
+"}}}
+"{{{ mappings
+nnoremap ; : 
+nnoremap <leader>w  :w<CR>
+nnoremap <leader>g  :e#<CR>
+nnoremap <silent><Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+" xnoremap <leader>j x<esc>EP
+"}}}
+"
+" +++ last edit position {{{
+if has("autocmd")
+  au BufWinLeave *.* mkview
+  au BufWinEnter *.* silent loadview
+endif
+"}}}
+" " +++ color {{{
+" " enable rich colors in console
+" if !has('gui_running')
+" 	set t_Co=256
+" endif
+" 
+" " color scheme retouch
+" autocmd ColorScheme * highlight Pmenu ctermbg=brown
+" autocmd ColorScheme * highlight PmenuSel ctermfg=25 ctermbg=3
+" autocmd ColorScheme * highlight LineNr ctermfg=236 ctermbg=234
+" autocmd ColorScheme * highlight CursorLineNr ctermbg=234
+" autocmd ColorScheme * highlight FoldColumn ctermfg=12 ctermbg=235
+" autocmd ColorScheme * highlight Folded cterm=bold ctermfg=12 ctermbg=234
+" 
+" "has to be put at the end of file, in order above autocmds work
+" colorscheme molokai
+" "}}}
+ 
+"{{{  Vundle 
+filetype off
+set nocompatible               " be improved
+set runtimepath+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'Valloric/YouCompleteMe'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+"}}}
+"{{{ >>> YCM <<<
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_autoclose_preview_window_after_insertion=1
+"}}}
+"{{{ >>> ctrlp.vim <<<
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_by_filename = 1
+let g:ctrlp_max_files = 600
+let g:ctrlp_max_depth = 5
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_match_window = 'bottom'
+let g:ctrlp_extensions = ['buffertag', 'dir']
+let g:ctrlp_cmd = 'call CallCtrlP()'
+
+nnoremap <Leader>f :CtrlP<CR>
+nnoremap <Leader>t :CtrlPBufTag<CR>
+
+func! CallCtrlP()
+  wincmd J
+  if exists('s:called_ctrlp')
+    CtrlPLastMode
+  else
+    let s:called_ctrlp = 1
+    CtrlPMRU
+  endif
+endfunc  
+"}}}
+"{{{ >>> auto-pairs >>>
+let g:AutoPirsFlyMode=1
+"}}}

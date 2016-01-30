@@ -1,0 +1,287 @@
+"=======================================================
+"   settings/mappings 
+"=======================================================``
+"{{{ +++ basic 
+syntax on
+filetype plugin on    " enable ftplugin scripts
+filetype indent on    " enable filetype specific indent scripts
+
+set nocompatible      " be iMproved
+set hidden            " hidden buffer: allow swiching without saving
+set mouse=a           " enable mouse
+set backspace=2       " fix <BS> problems 
+set number            " line number
+set relativenumber
+set ttyfast
+
+" tab/indent, filetype specific settings at .vim/indent/
+set tabstop=2         " display tab as 2 spaces
+set softtabstop=2     " insert tab as 2 spaces
+set shiftwidth=2      " set each indent level as 2 spaces
+set smarttab          " <BS> delete spaces according to shiftwidth
+set expandtab         " expand tab to real spaces
+
+" enable folding automatically
+set foldenable
+set foldmethod=marker
+set foldopen-=block   " jump to next paragraph w/o opening folds
+set foldlevel=0		    " un/open top level folds
+set foldcolumn=2
+set foldnestmax=3
+
+" search settings
+set incsearch         " find the next match as we type
+set hlsearch          " Highlight search
+set viminfo^=h        " Start with no highlighting
+set ignorecase        " ignore case in search
+set smartcase        
+
+" enable Tab completion in command mode
+set wildmenu
+set wildmode=longest:full,full
+set wildignore=*.o,*.obj,*~ 
+set wildignore+=*.so,*.swp,*.zip
+set wildignore+=*/node_modules/*,*/tmp/*,*/errors/*
+
+" No text wrapping in display
+set nowrap            
+set scroll=5          
+set sidescrolloff=5   
+"}}}
+"{{{ +++ mappings
+nnoremap ; :
+nnoremap <leader>w  :w<CR>
+nnoremap <leader>g  :e#<CR>
+nnoremap <silent> <Leader>ve  :e ~/.vimrc<CR>
+nnoremap <silent><leader>vs  :so ~/.vimrc<CR>
+nnoremap <silent><F5> :set paste!<CR>
+nnoremap <silent><F8> :TagbarToggle<CR>
+
+" toggle folding with <space>
+nnoremap <silent><Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+nnoremap <Leader>q :bd<CR>
+nnoremap <Leader>b :ls!<CR>
+noremap <C-d> :sh<CR>
+"}}}
+
+" +++ font {{{
+if has('gui_running') 
+  if has('gui_macvim')
+    set guifont=Source\ Code\ Pro\ For\ Powerline:h14
+  end
+end
+"}}}
+" +++ color {{{
+" enable rich colors in console
+if !has('gui_running')
+	set t_Co=256
+endif
+
+" color scheme retouch
+autocmd ColorScheme * hi Pmenu ctermbg=brown
+autocmd ColorScheme * hi PmenuSel ctermfg=25 ctermbg=3
+autocmd ColorScheme * hi LineNr ctermfg=11 ctermbg=234
+autocmd ColorScheme * hi CursorLineNr ctermbg=234
+autocmd ColorScheme * hi FoldColumn ctermfg=12 ctermbg=234
+autocmd ColorScheme * hi Folded cterm=bold ctermfg=12 ctermbg=234
+autocmd ColorScheme * hi Normal ctermbg=234
+autocmd ColorScheme * hi Special ctermbg=234
+autocmd ColorScheme * hi NonText ctermbg=234
+autocmd ColorScheme * hi MatchParen cterm=bold,underline ctermbg=234 ctermfg=240
+"has to be put at the end of file, in order above autocmds work
+colorscheme molokai
+
+"}}}
+"{{{ +++ toggle mouse mode : <F6>
+" mouse-xterm: select and copy
+map <silent><F6> :let &mouse=(&mouse == "a"?"":"a")<CR>:call ShowMouseMode()<CR>
+imap <silent><F6> :let &mouse=(&mouse == "a"?"":"a")<CR>:call ShowMouseMode()<CR>
+function! ShowMouseMode()
+    if &mouse == 'a'
+        echo "mouse-vim"
+    else
+        echo "mouse-xterm"
+    endif
+endfunction
+"}}}
+" +++ status line {{{
+  set laststatus=2                             " always show statusbar  
+  set statusline=  
+  " set statusline+=%-5n\                          " buffer number  
+  " set statusline+=%h%m%r%w                       " status flags  
+  " set statusline+=\[%{strlen(&ft)?&ft:'none'}]\  " file type  
+  " set statusline+=%F\                            " filename   
+  set statusline+=%=                             " right align remainder  
+  set statusline+=%{HasPaste()}\                 " paste mode
+  " set statusline+=CWD:\ %{getcwd()}\             " working directory
+  " set statusline+=0x%-8B                         " character value  
+  set statusline+=%-14(%l,%c%V%)                 " line, character  
+  set statusline+=%<%P                           " file position  
+"}}}
+" +++ window / buffer {{{
+" window split directions
+" set splitright
+" set splitbelow
+" " maximize the new horizontally split window
+" set wmh=0
+" set wh=999
+" " if buffer is open in a window, switch to that window
+" set switchbuf+=useopen
+
+"" jump to downward with C-J
+"nnoremap <C-t> <C-W><C-W><C-W>_
+"inoremap <C-t> <C-O><C-W><C-W><C-O><C-W>_
+" jump to upward with C-K
+"nnoremap <C-K> <C-W>W<C-W>_
+"inoremap <C-K> <C-O><C-W>W<C-O><C-W>_
+" jump to previous window
+"nnoremap <C-G> <C-W><C-P>
+" delete buffer w/o changing window layout
+"nnoremap <Leader>q :bd<CR>
+"nnoremap <Leader>b :ls!<CR>
+
+" }}}
+" +++ paragraph jump by {/} {{{
+" jump forward/backward to the begining of next paragraph 
+  set whichwrap+=b,s
+  nnoremap { k{<Space>0
+  vnoremap { k{<Space>0
+  nnoremap } j}<BS>
+  vnoremap } j}<BS> 
+" }}}
+" +++ last edit position {{{
+if has("autocmd")
+  "au BufWinLeave *.* mkview
+  "au BufWinEnter *.* silent loadview
+  au BufReadPost * 
+        \ if line("'\"") > 1 && line("'\"") <= line("$") 
+        \ | exe "normal! g'\"" | endif
+endif
+"}}}
+" +++ cursor shape {{{
+let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+" }}}
+" +++ disable beeping{{{
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+"}}}
+"{{{ +++ Fast wrap
+" move matched parenthesis to end of next word
+nnoremap <c-e> :call FastWrap()<CR>
+inoremap <c-e> <Esc>l:call FastWrap()<CR>
+"}}}
+
+function! FastWrap() "{{{
+
+  if s:check_cursor_space()
+    normal vwxEp
+  else
+    normal xEp
+  end
+endfunction
+" }}}
+function! HasPaste() "{{{
+  if &paste
+    return '[paste]'
+  else
+    return ''
+endfunction 
+"}}}
+function! s:check_cursor_space() "{{{
+  let col = col('.')
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction 
+" }}}
+
+"=======================================================
+"   Plugins Management 
+"=======================================================
+" +++ plugin management [Vundle] {{{
+filetype off
+set nocompatible               " be improved
+set runtimepath+=~/.vim/bundle/vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-surround'
+Plugin 'Valloric/YouCompleteMe'
+" Plugin 'humiaozuzu/TabBar'
+Plugin 'bling/vim-bufferline'
+Plugin 'Neovim/Neovim'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+"}}}
+"{{{ <<<< ctrlp.vim >>>>
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_by_filename = 1
+let g:ctrlp_max_files = 600
+let g:ctrlp_max_depth = 5
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_match_window = 'bottom'
+let g:ctrlp_extensions = ['buffertag', 'dir']
+let g:ctrlp_cmd = 'call CallCtrlP()'
+
+nnoremap <Leader>f :CtrlP<CR>
+nnoremap <Leader>t :CtrlPBufTag<CR>
+
+func! CallCtrlP()
+  wincmd J
+  if exists('s:called_ctrlp')
+    CtrlPLastMode
+  else
+    let s:called_ctrlp = 1
+    CtrlPMRU
+  endif
+endfunc  
+"}}}
+"{{{ <<<< auto-pairs >>>>
+let g:AutoPirsFlyMode=1
+"}}}
+
+"=======================================================
+"   Cheet Sheets
+"=======================================================
+"{{{ >>> Vim folding commands
+"	 ---------------------------------
+"	 zf#j creates a fold from the cursor down # lines.
+"	 zf/ string creates a fold from the cursor to string .
+"	 zj moves the cursor to the next fold.
+"	 zk moves the cursor to the previous fold.
+"	 za toggle a fold at the cursor.
+"	 zo opens a fold at the cursor.
+"	 zO opens all folds at the cursor.
+"	 zc closes a fold under cursor. 
+"	 zm increases the foldlevel by one.
+"	 zM closes all open folds.
+"	 zr decreases the foldlevel by one.
+"	 zR decreases the foldlevel to zero -- all folds will be open.
+"	 zd deletes the fold at the cursor.
+"	 zE deletes all folds.
+"	 [z move to start of open fold.
+"	 ]z move to end of open fold.
+"}}}
+"{{{ >>> Table Mode
+"}}}
+
+command! -nargs=1 -complete=file O tab drop <args>
+
+let g:bufferline_echo = 0
+  autocmd VimEnter *
+    \ let &statusline='%{bufferline#refresh_status()}'
+      \ .bufferline#get_status_string()
+      \ .&statusline
+
+" <leader><number> is mapped to open buffer <number>
+let i = 1
+while i <= 9
+  execute 'nnoremap <silent><leader>'.i.' :b'.i.'<CR>'
+  let i = i + 1
+endwhile
+
