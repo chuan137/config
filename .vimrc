@@ -41,8 +41,17 @@ if !has('gui_running')
 	set t_Co=256
 endif
 
+" autocmd ColorScheme * highlight Pmenu ctermbg=brown
+" autocmd ColorScheme * highlight PmenuSel ctermfg=25 ctermbg=3
+" autocmd ColorScheme * highlight LineNr ctermfg=236 ctermbg=234
+" autocmd ColorScheme * highlight CursorLineNr ctermbg=234
+" autocmd ColorScheme * highlight FoldColumn ctermfg=12 ctermbg=235
+" autocmd ColorScheme * highlight Folded cterm=bold ctermfg=12 ctermbg=234
+
 colorscheme molokai
 let python_highlight_all = 1
+
+hi MatchParen cterm=underline,bold ctermbg=none ctermfg=14
 "}}}
 
 " +++ last edit position {{{
@@ -106,7 +115,10 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'sentientmachine/Pretty-Vim-Python'
+Plugin 'christoomey/vim-tmux-navigator'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
