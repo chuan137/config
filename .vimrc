@@ -65,24 +65,14 @@ endif
 nnoremap <c-e> :call FastWrap()<CR>
 inoremap <c-e> <Esc>l:call FastWrap()<CR>
 "}}}
-" " +++ color {{{
-" " enable rich colors in console
-" if !has('gui_running')
-" 	set t_Co=256
-" endif
-" 
-" " color scheme retouch
-" autocmd ColorScheme * highlight Pmenu ctermbg=brown
-" autocmd ColorScheme * highlight PmenuSel ctermfg=25 ctermbg=3
-" autocmd ColorScheme * highlight LineNr ctermfg=236 ctermbg=234
-" autocmd ColorScheme * highlight CursorLineNr ctermbg=234
-" autocmd ColorScheme * highlight FoldColumn ctermfg=12 ctermbg=235
-" autocmd ColorScheme * highlight Folded cterm=bold ctermfg=12 ctermbg=234
-" 
-" "has to be put at the end of file, in order above autocmds work
-" colorscheme molokai
-" "}}}
- 
+" +++ Cursor shape {{{
+if $TERM_PROGRAM =~ "iTerm"
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
+" }}}
+
+
 function! FastWrap() "{{{
 
   if s:check_cursor_space()
