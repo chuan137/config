@@ -84,4 +84,5 @@ uninstall :
 
 .PHONY : update-submodules
 update-submodules :
+	@git submodule update --init
 	@git submodule foreach git pull origin master
