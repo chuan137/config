@@ -5,7 +5,7 @@
 
 test -d $HOME/.local && export LOCAL=$HOME/.local || export LOCAL=$HOME/usr
 
-export PATH=$LOCAL/bin:$PATH
+export PATH=$LOCAL/bin:/usr/local/sbin:$PATH
 
 export PKG_CONFIG_PATH=$LOCAL/lib/pkgconfig:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=$LOCAL/lib64:$LOCAL/lib:$LD_LIBRARY_PATH
