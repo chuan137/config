@@ -137,11 +137,11 @@ tx-renumber() { tmux move-window -r; tmux refresh-client -S; }
 #}}}
 #{{{ Functions
 function ls_all {
-  ls -al "$@" | more -R
+  ls -al "$@" | less -eRFX
 }
 
 function ls_ltr {
-  ls -ltr "$@" | more -R
+  ls -ltr "$@" | less -eRFX
 }
 
 function rm_mac {
@@ -155,7 +155,7 @@ function rm_mac {
 #}}}
 #{{{ Extra functions
 # python virtualenv wrapper
-function exbash {
+function gobash {
 export WORKON_HOME=$HOME/.virtualenv
 if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then 
     source $HOME/.local/bin/virtualenvwrapper.sh
