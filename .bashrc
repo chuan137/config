@@ -26,6 +26,10 @@ export LANG=en_US.UTF-8
 # default editor
 export VISUAL=vim
 export EDIT=$VISUAL
+
+# z
+export _Z_DATA=$HOME/.zdata
+source $HOME/.z/z.sh
 #}}}
 #{{{ Aliases
 alias ll="ls -l"

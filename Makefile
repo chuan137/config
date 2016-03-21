@@ -39,8 +39,10 @@ endef
 define init_append
   @rm -rf $(DST_ROOT)/.vim/bundle/Vundle.vim
   @rm -rf $(DST_ROOT)/.git-aware-prompt
+  @rm -rf $(DST_ROOT)/.z
   @ln -s $(SRC_ROOT)/lib/Vundle.vim $(DST_ROOT)/.vim/bundle/Vundle.vim
   @ln -s $(SRC_ROOT)/lib/git-aware-prompt $(DST_ROOT)/.git-aware-prompt
+  @ln -s $(SRC_ROOT)/lib/z $(DST_ROOT)/.z
 endef
 
 define post_uninstall

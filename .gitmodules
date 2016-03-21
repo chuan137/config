@@ -4,3 +4,6 @@
 [submodule "lib/Vundle.vim"]
 	path = lib/Vundle.vim
 	url = git@github.com:VundleVim/Vundle.vim.git
+[submodule "lib/z"]
+	path = lib/z
+	url = https://github.com/rupa/z.git
