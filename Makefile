@@ -16,7 +16,7 @@ print-%  : ; @echo $* = $($*)
 # recursively export the content in $(EXPORT_CONTENT)
 EXPORT = $(shell find "$(SRC_ROOT)" -maxdepth 1 -name '.*' $(patsubst %,-not -name '%',$(NO_EXPORT))) \
 		 $(shell find $(addprefix "$(SRC_ROOT)"/,$(EXPORT_CONTENT)) -mindepth 1 -type f 2>/dev/null) \
- 		 $(shell find "$(SRC_ROOT)/OS/$(KERNEL)" -name '.*' -mindepth 1 -type f 2>/dev/null) \
+ 		 $(shell find "$(SRC_ROOT)/os/$(KERNEL)" -name '.*' -mindepth 1 -type f 2>/dev/null) \
 		 $(wildcard $(addprefix $(SRC_ROOT)/,$(EXPORT_APPEND)))
 
 # export files with suffix *.export to *
@@ -24,8 +24,8 @@ EXPLICIT_EXPORT = $(shell find "$(SRC_ROOT)" -name '*.export')
 
 # build destination path
 export_dst = \
-	$(patsubst $(SRC_ROOT)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/%,$(filter-out $(SRC_ROOT)/$(KERNEL)/%,$(EXPORT)))) \
-	$(patsubst $(SRC_ROOT)/OS/$(KERNEL)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/OS/$(KERNEL)/%,$(EXPORT))) \
+	$(patsubst $(SRC_ROOT)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/%,$(filter-out $(SRC_ROOT)/os/$(KERNEL)/%,$(EXPORT)))) \
+	$(patsubst $(SRC_ROOT)/os/$(KERNEL)/%,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/os/$(KERNEL)/%,$(EXPORT))) \
 	$(patsubst %,$(DST_ROOT)/%,$(filter-out $(SRC_ROOT)/%,$(EXPORT)))
 explicit_export_dst = \
 	$(patsubst $(SRC_ROOT)/%.export,$(DST_ROOT)/%,$(filter $(SRC_ROOT)/%,$(EXPLICIT_EXPORT))) \
@@ -73,7 +73,7 @@ install : $(export_dst) $(explicit_export_dst)
 $(DST_ROOT)/% : $(SRC_ROOT)/%
 	$(mkdir_and_export_target)
 
-$(DST_ROOT)/% : $(SRC_ROOT)/OS/$(KERNEL)/%
+$(DST_ROOT)/% : $(SRC_ROOT)/os/$(KERNEL)/%
 	$(mkdir_and_export_target)
 
 $(explicit_export_dst) : $(DST_ROOT)/% : $(SRC_ROOT)/%.export
