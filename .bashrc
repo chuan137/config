@@ -74,7 +74,7 @@ fi
 # Set different prompt on ssh login
 if [ -n "$SSH_CLIENT" ]; then
     #source "$GITAWAREPROMPT/main.sh"
-    export PS1='\[\033[0;36m\]\h \[\033[0;32m\]\W\[\033[1;33m\]$git_branch$git_dirty \[\033[0;32m\]> \[\033[0m\]'
+    export PS1=$'\[\033[0;36m\]\h \[\033[0;32m\]\W\[\033[1;33m\]$git_branch$git_dirty \[\033[0;32m\]\xc2\xbb \[\033[0m\]'
 else
     export PS1=$'\[\033[0;32m\]\W\[\033[1;33m\]$git_branch$git_dirty \[\033[0;32m\]\xc2\xbb \[\033[0m\]'
 fi
